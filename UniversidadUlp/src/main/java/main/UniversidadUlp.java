@@ -1,6 +1,7 @@
 package main;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -8,6 +9,22 @@ import java.sql.SQLException;
 import javax.swing.JOptionPane;
 
 public class UniversidadUlp {
+    
+    public static void agregarAlumnoBD(Connection conexion, int dni, String apellido, String nombre, String fechaNacimiento, boolean estado) throws SQLException{
+        String sql = "INSERT INTO alumno(dni, apellido, nombre, fechaNacimiento, estado) VALUES (?, ?, ?, ?, ?)";
+        PreparedStatement ps;
+        int registros = 0;
+    
+        ps = conexion.prepareStatement(sql);
+        ps.setInt(1, dni);
+        ps.setString(2, apellido);
+        ps.setString(3, nombre);
+        ps.setDate(4, Date.valueOf(fechaNacimiento));
+        ps.setBoolean(5, estado);
+    
+        registros = ps.executeUpdate();
+        System.out.println(registros);
+    }
     
     public static void main(String[] args) {
         
@@ -22,23 +39,9 @@ public class UniversidadUlp {
             Connection conexion = DriverManager.getConnection("jdbc:mariadb://localhost:3306/universidadulp", "root", "");
             
             //Agregar alumnos
-            sql = "INSERT INTO alumno(dni, apellido, nombre, fechaNacimiento, estado) "
-                    + "VALUES (12345678, 'González', 'María', '2000-03-15', 1)";
-            ps = conexion.prepareStatement(sql);
-            registros = ps.executeUpdate();
-            System.out.println(registros);
-            
-            sql = "INSERT INTO alumno(dni, apellido, nombre, fechaNacimiento, estado) "
-                    + "VALUES (87654321, 'Martínez', 'Juan', '1999-07-20', 1)";
-            ps = conexion.prepareStatement(sql);
-            registros = ps.executeUpdate();
-            System.out.println(registros);
-            
-            sql = "INSERT INTO alumno(dni, apellido, nombre, fechaNacimiento, estado) "
-                    + "VALUES (55555555, 'López', 'Pedro', '2001-05-10', 1)";
-            ps = conexion.prepareStatement(sql);
-            registros = ps.executeUpdate();
-            System.out.println(registros);
+            agregarAlumnoBD(conexion, 12345678, "Corales", "Maria", "2000-03-15", true);
+            agregarAlumnoBD(conexion, 87654321, "Martínez", "Juan", "1999-07-20", true);
+            agregarAlumnoBD(conexion, 55555555, "López", "Pedro", "2001-05-10", true);
             
             //Agregar materias
             sql = "INSERT INTO materia(idMateria, nombre, año, estado) "
