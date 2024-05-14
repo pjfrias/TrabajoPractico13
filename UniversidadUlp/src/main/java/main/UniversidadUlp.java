@@ -45,6 +45,23 @@ public class UniversidadUlp {
         System.out.println(registros);
     }
     
+    public static void inscripcionMateriasBD(Connection conexion, int nota, String dni, int mate) throws SQLException{
+        String sql = "INSERT INTO inscripcion(nota, idALumno, idMateria) "
+                    + "VALUES (?, (SELECT idAlumno FROM alumno WHERE dni = ?), ?)";
+        PreparedStatement ps;
+        int registros = 0;
+        
+        
+        ps = conexion.prepareStatement(sql);
+        
+        ps.setInt(1, nota);
+        ps.setString(2, dni);
+        ps.setInt(3, mate);        
+        
+        registros = ps.executeUpdate();
+        System.out.println(registros);
+    }
+    
     public static void main(String[] args) {
         
         String sql = "";
@@ -107,6 +124,8 @@ public class UniversidadUlp {
             ps = conexion.prepareStatement(sql);
             registros = ps.executeUpdate();
             System.out.println(registros);
+            
+            inscripcionMateriasBD(conexion,8,"55555555",4);
             
             //Listar los datos de los alumnos con calificaciones superiores a 8 
             sql = "SELECT * FROM alumno WHERE idAlumno IN (SELECT idAlumno FROM inscripcion WHERE nota >= 8)";
