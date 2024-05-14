@@ -11,7 +11,8 @@ import javax.swing.JOptionPane;
 public class UniversidadUlp {
     
     public static void agregarAlumnoBD(Connection conexion, int dni, String apellido, String nombre, String fechaNacimiento, boolean estado) throws SQLException{
-        String sql = "INSERT INTO alumno(dni, apellido, nombre, fechaNacimiento, estado) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO alumno(dni, apellido, nombre, fechaNacimiento, estado) "
+                + "VALUES (?, ?, ?, ?, ?)";
         PreparedStatement ps;
         int registros = 0;
     
@@ -22,6 +23,24 @@ public class UniversidadUlp {
         ps.setDate(4, Date.valueOf(fechaNacimiento));
         ps.setBoolean(5, estado);
     
+        registros = ps.executeUpdate();
+        System.out.println(registros);
+    }
+    
+    public static void agregarMateriasBD(Connection conexion, int idMateria, String nombre, int anio, boolean estado) throws SQLException{
+        String sql = "INSERT INTO materia(idMateria, nombre, año, estado) "
+                    + "VALUES (?, ?, ?, ?)";
+        PreparedStatement ps;
+        int registros = 0;
+        
+        
+        ps = conexion.prepareStatement(sql);
+        
+        ps.setInt(1, idMateria);
+        ps.setString(2, nombre);
+        ps.setInt(3, anio);
+        ps.setBoolean(4, estado);
+        
         registros = ps.executeUpdate();
         System.out.println(registros);
     }
@@ -44,29 +63,10 @@ public class UniversidadUlp {
             agregarAlumnoBD(conexion, 55555555, "López", "Pedro", "2001-05-10", true);
             
             //Agregar materias
-            sql = "INSERT INTO materia(idMateria, nombre, año, estado) "
-                    + "VALUES (1, 'Matemáticas', 1, 1)";
-            ps = conexion.prepareStatement(sql);
-            registros = ps.executeUpdate();
-            System.out.println(registros);
-            
-            sql = "INSERT INTO materia(idMateria, nombre, año, estado) "
-                    + "VALUES (2, 'Historia', 1, 1)";
-            ps = conexion.prepareStatement(sql);
-            registros = ps.executeUpdate();
-            System.out.println(registros);
-            
-            sql = "INSERT INTO materia(idMateria, nombre, año, estado) "
-                    + "VALUES (3, 'Ciencias', 2, 1)";
-            ps = conexion.prepareStatement(sql);
-            registros = ps.executeUpdate();
-            System.out.println(registros);
-            
-            sql = "INSERT INTO materia(idMateria, nombre, año, estado) "
-                    + "VALUES (4, 'Literatura', 2, 1)";
-            ps = conexion.prepareStatement(sql);
-            registros = ps.executeUpdate();
-            System.out.println(registros);
+            agregarMateriasBD(conexion, 1, "Matematicas", 1, true);
+            agregarMateriasBD(conexion, 2, "Historia", 1, true);
+            agregarMateriasBD(conexion, 3, "Ciencias", 2, true);
+            agregarMateriasBD(conexion, 4, "Literatura", 2, true);
             
             //Inscribir los tres alumnos en 2 materias cada uno
             //Alumno 1 
