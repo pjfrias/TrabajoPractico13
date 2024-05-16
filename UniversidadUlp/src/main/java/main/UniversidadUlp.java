@@ -9,6 +9,8 @@ import java.sql.SQLException;
 import javax.swing.JOptionPane;
 
 public class UniversidadUlp {
+
+	// DECLARACION DE FUNCIONES
     
     public static void agregarAlumnoBD(Connection conexion, int dni, String apellido, String nombre, String fechaNacimiento, boolean estado) throws SQLException{
         String sql = "INSERT INTO alumno(dni, apellido, nombre, fechaNacimiento, estado) "
@@ -61,6 +63,8 @@ public class UniversidadUlp {
         registros = ps.executeUpdate();
         System.out.println(registros);
     }
+
+	//METODO MAIN
     
     public static void main(String[] args) {
         
